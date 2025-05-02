@@ -53,7 +53,7 @@ fi
 # Install Aztec CLI jika belum terinstal
 if ! is_installed aztec; then
   echo "Menginstal Aztec CLI..."
-  bash -i <(curl -s https://install.aztec.network)
+  bash -i <(curl -s https://aztec.network/install)
 
   echo 'export PATH="$HOME/.aztec/bin:$PATH"' >> ~/.bash_profile
   source ~/.bash_profile
@@ -61,7 +61,7 @@ else
   echo "Aztec CLI sudah terinstal."
 fi
 
-# Update ke alpha-testnet jika belum
+# Update ke alpha-testnet
 echo "Memastikan Aztec CLI versi alpha-testnet..."
 aztec-up alpha-testnet
 
@@ -72,7 +72,7 @@ if [ ! -f .env ]; then
   cat << EOF > .env
 ETHEREUM_HOSTS=https://eth-sepolia.g.alchemy.com/v2/your-alchemy-key
 L1_CONSENSUS_HOST_URLS=https://sepolia-beacon.drpc.org
-BLOB_SINK_URL=https://your-blob-sink-url
+BLOB_SINK_URL=
 VALIDATOR_PRIVATE_KEY=0xYourPrivateKey
 COINBASE_ADDRESS=0xYourPublicAddress
 P2P_IP=$(curl -s ifconfig.me)
@@ -85,19 +85,27 @@ DATA_DIRECTORY=/data
 EOF
 
   echo "File .env telah dibuat. Silakan isi dengan data Anda:"
-  echo "- ETHEREUM_HOSTS (Alchemy/Infura)"
-  echo "- L1_CONSENSUS_HOST_URLS (Quicknode/dRPC)"
-  echo "- BLOB_SINK_URL (opsional)"
-  echo "- VALIDATOR_PRIVATE_KEY & COINBASE_ADDRESS"
+  echo "- ETHEREUM_HOSTS (contoh: Alchemy atau Infura URL)"
+  echo "- L1_CONSENSUS_HOST_URLS (contoh: Quicknode atau dRPC URL)"
+  echo "- BLOB_SINK_URL (opsional, biarkan kosong kalo ga punya)"
+  echo "- VALIDATOR_PRIVATE_KEY (kunci privat Ethereum, jangan share!)"
+  echo "- COINBASE_ADDRESS (alamat publik Ethereum)"
   echo ""
   echo "Edit file dengan: nano .env"
   read -p "Tekan Enter setelah selesai mengedit .env..."
 else
-  echo "File .env sudah ada. Melanjutkan eksekusi..."
+  echo "File .env sudah ada. Pastikan data di dalamnya valid."
 fi
 
 # Load environment variable dari file .env
 export $(grep -v '^#' .env | xargs)
+
+# Cek placeholder values
+if grep -q "your-alchemy-key\|0xYourPrivateKey\|0xYourPublicAddress" .env; then
+  echo "Peringatan: File .env masih berisi nilai placeholder (contoh: your-alchemy-key, 0xYourPrivateKey, 0xYourPublicAddress)."
+  echo "Ganti dengan data valid atau node ga akan jalan bener."
+  read -p "Tekan Enter untuk melanjutkan (atau Ctrl+C untuk periksa ulang)..."
+fi
 
 # Jalankan Aztec node
 echo "Menjalankan Aztec sequencer..."
