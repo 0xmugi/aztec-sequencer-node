@@ -1,16 +1,3 @@
-#!/bin/bash
-
-# ┌────────────────────────────────────┐
-# │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
-# │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
-# │██╔████╔██║██████╔╝██║  ███╗███████║│
-# │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
-# │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
-# │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
-# └────────────────────────────────────┘                          
-#      created by 0xMugi
-#                               
-
 # Exit on any error
 set -e
 
@@ -20,11 +7,18 @@ if ! lsb_release -a 2>/dev/null | grep -q "Ubuntu"; then
   exit 1
 fi
 
+# Clean up duplicate Docker repository entries
+echo "Cleaning up Docker repository entries..."
+sudo rm -f /etc/apt/sources.list.d/docker.list
+sudo rm -f /etc/apt/sources.list.d/archive_uri-https_download_docker_com_linux_ubuntu-jammy.list
+
 # Install prerequisites
 echo "Installing prerequisites..."
 sudo apt-get update
-# Remove conflicting containerd packages
-sudo apt-get remove -y containerd containerd.io 2>/dev/null || true
+# Purge conflicting containerd packages
+sudo apt-get purge -y containerd containerd.io 2>/dev/null || true
+# Fix broken dependencies
+sudo apt-get install -f -y
 sudo apt-get install -y curl docker.io
 
 # Install Docker Compose
