@@ -23,6 +23,8 @@ fi
 # Install prerequisites
 echo "Installing prerequisites..."
 sudo apt-get update
+# Remove conflicting containerd packages
+sudo apt-get remove -y containerd containerd.io 2>/dev/null || true
 sudo apt-get install -y curl docker.io
 
 # Install Docker Compose
@@ -34,6 +36,12 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo usermod -aG docker $USER
+
+# Verify Docker installation
+if ! command -v docker &> /dev/null; then
+  echo "Error: Docker failed to install. Try running 'sudo apt-get update && sudo apt-get install -y docker.io' manually."
+  exit 1
+fi
 
 # Install Aztec CLI
 echo "Installing Aztec CLI..."
@@ -94,4 +102,4 @@ aztec add-l1-validator \
   --staking-asset-handler $STAKING_ASSET_HANDLER \
   --l1-chain-id $L1_CHAIN_ID
 
-echo "Dah kelar."
+echo "Dah Kelar."

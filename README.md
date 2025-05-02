@@ -22,8 +22,8 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 1. **Klon Repo**
 
    ```bash
-   git clone https://github.com/0xmugi/aztec-sequencer-node.git
-   cd aztec-sequencer-node
+git clone https://github.com/0xmugi/aztec-sequencer-node.git
+cd aztec-sequencer-node
    ```
 
 2. **Jalanin Skrip**
@@ -31,8 +31,8 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
    File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
 
    ```bash
-   chmod +x setup_sequencer.sh
-   ./setup_sequencer.sh
+chmod +x sequencer.sh
+./sequencer.sh
    ```
 
 3. **Edit `.env`**
@@ -106,6 +106,7 @@ docker-compose up -d
 
 ## Kalo Ada Masalah
 
+- **Docker Gagal Instal**: Kalo ada error soal `containerd` atau `containerd.io`, skrip udah otomatis hapus paket konflik. Kalo masih gagal, coba manual: `sudo apt-get remove containerd containerd.io && sudo apt-get install docker.io`.
 - **L1 Gak Connect**: Kalo pake klien Ethereum lokal, pastiin `network_mode: host` ada di Docker Compose.
 - **Port Gak Keforward**: Cek port 40400 (TCP/UDP) udah dibuka di router.
 - **Kuota Validator Penuh**: Coba daftar lagi besok kalo gagal.
