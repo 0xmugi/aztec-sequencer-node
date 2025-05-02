@@ -1,65 +1,47 @@
-# Pengaturan Node Sequencer Aztec
+# Node Sequencer Aztec
 
-![Aztec Logo](https://via.placeholder.com/150x50.png?text=Aztec+Network)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
-[![Discord](https://img.shields.io/discord/123456789012345678?logo=discord&label=Discord)](https://discord.gg/aztec)
+Panduan simpel buat jalanin **node sequencer Aztec** di testnet alpha pake Ubuntu Linux. Node ini ngurus transaksi, bikin blok, dan kirim ke Layer 1 (L1) setelah dicek validator.
 
-Selamat datang di repositori untuk mengatur dan menjalankan **node sequencer Aztec** pada testnet alpha di sistem Ubuntu Linux. Node sequencer berperan penting dalam mengurutkan transaksi, menghasilkan blok, dan mengirimkannya ke Layer 1 (L1) setelah divalidasi oleh komite validator.
+## Apa Aja Yang Dibutuhin
 
-## Daftar Isi
+- Komputer Ubuntu Linux dengan terminal.
+- Docker sama Docker Compose udah terinstall.
+- Kunci privat Ethereum + alamat publik buat validator.
+- Sepolia ETH buat gas (coba [Sepolia PoW Faucet](https://sepolia.powfaucet.com/) atau tanya di Discord Aztec).
+- RPC L1:
+  - Eksekusi (misal: Alchemy, Infura).
+  - Konsensus (misal: Quicknode, dRPC).
+- (Opsional) URL buat penyimpanan blob (misal: Alchemy).
+- Port 40400 (TCP/UDP) diforward di router ke IP lokal.
+- IP eksternal (cek pake `curl ifconfig.me`).
 
-- [Prasyarat](#prasyarat)
-- [Mulai Cepat](#mulai-cepat)
-- [Pengaturan Lanjutan dengan Docker Compose](#pengaturan-lanjutan-dengan-docker-compose)
-- [Pemecahan Masalah](#pemecahan-masalah)
-- [Kontribusi](#kontribusi)
-- [Dukungan](#dukungan)
-- [Lisensi](#lisensi)
+Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
-## Prasyarat
+## Cara Jalanin
 
-Sebelum memulai, pastikan Anda telah menyiapkan:
-
-- **Sistem Operasi**: Ubuntu Linux dengan akses terminal.
-- **Perangkat Lunak**: Docker dan Docker Compose terinstal.
-- **Kunci Ethereum**: Kunci privat dan alamat publik untuk operasi validator.
-- **Sepolia ETH**: Untuk biaya gas, dapatkan dari [Sepolia PoW Faucet](https://sepolia.powfaucet.com/) atau tanyakan di komunitas Discord Aztec.
-- **RPC L1**:
-  - Klien eksekusi (contoh: Alchemy, Infura).
-  - Klien konsensus (contoh: Quicknode, dRPC).
-- **Layanan Blob** (opsional): URL penyimpanan blob (contoh: Alchemy).
-- **Jaringan**: Port 40400 (TCP/UDP) diteruskan pada router ke IP lokal komputer.
-- **IP Eksternal**: Dapatkan dengan menjalankan `curl ifconfig.me`.
-
-**Gabung ke [Discord Aztec](https://discord.gg/aztec)** untuk bantuan dan diskusi komunitas.
-
-## Mulai Cepat
-
-Ikuti langkah-langkah berikut untuk mengatur node sequencer:
-
-1. **Klon Repositori**
+1. **Klon Repo**
 
    ```bash
    git clone https://github.com/nama-pengguna-anda/aztec-sequencer-node.git
    cd aztec-sequencer-node
    ```
 
-2. **Jalankan Skrip Pengaturan**
+2. **Jalanin Skrip**
 
-   Skrip `setup_sequencer.sh` akan menginstal Aztec CLI, mengatur lingkungan, dan menjalankan sequencer.
+   File `setup_sequencer.sh` bakal instal Aztec CLI, atur semua, dan nyalain sequencer.
 
    ```bash
    chmod +x setup_sequencer.sh
    ./setup_sequencer.sh
    ```
 
-3. **Konfigurasi File `.env`**
+3. **Edit `.env`**
 
-   Edit file `.env` dengan informasi spesifik Anda:
+   Buka `.env` dan isi data kamu:
 
-   - `ETHEREUM_HOSTS`: URL RPC klien eksekusi L1.
-   - `L1_CONSENSUS_HOST_URLS`: URL RPC klien konsensus L1.
-   - `BLOB_SINK_URL`: URL layanan penyimpanan blob (opsional).
+   - `ETHEREUM_HOSTS`: URL RPC eksekusi L1.
+   - `L1_CONSENSUS_HOST_URLS`: URL RPC konsensus L1.
+   - `BLOB_SINK_URL`: URL penyimpanan blob (kalo ada).
    - `VALIDATOR_PRIVATE_KEY`: Kunci privat Ethereum.
    - `COINBASE_ADDRESS`: Alamat publik Ethereum.
 
@@ -79,13 +61,13 @@ Ikuti langkah-langkah berikut untuk mengatur node sequencer:
    DATA_DIRECTORY=/data
    ```
 
-4. **Daftar sebagai Validator**
+4. **Daftar Validator**
 
-   Skrip akan mendaftarkan node Anda sebagai validator setelah sinkronisasi selesai. Jika kuota validator harian penuh, coba lagi nanti. Informasi lebih lanjut ada di [blog Aztec](https://aztec.network/blog).
+   Skrip otomatis daftarin node kamu sebagai validator setelah sync. Kalo kuota harian penuh, coba lagi besok. Cek [blog Aztec](https://aztec.network/blog) buat info.
 
-## Pengaturan Lanjutan dengan Docker Compose
+## Pake Docker Compose (Opsional)
 
-Untuk pengguna lanjutan, Anda dapat menjalankan sequencer menggunakan Docker Compose. Buat file `docker-compose.yml`:
+Kalo mau cara lain, pake Docker Compose. Bikin file `docker-compose.yml`:
 
 ```yaml
 name: aztec-node
@@ -114,27 +96,23 @@ services:
     network_mode: host
 ```
 
-Jalankan Docker Compose:
+Jalanin:
 
 ```bash
 docker-compose up -d
 ```
 
-## Pemecahan Masalah
+## Kalo Ada Masalah
 
-- **Akses L1**: Jika menggunakan klien Ethereum lokal, pastikan `network_mode: host` digunakan di Docker Compose untuk Ubuntu.
-- **Penerusan Port**: Verifikasi bahwa port 40400 (TCP/UDP) diteruskan ke komputer Anda.
-- **Kuota Validator**: Jika pendaftaran gagal karena kuota harian, coba lagi keesokan harinya.
-- **Log**: Periksa log dengan `docker logs <container_id>` atau setel `LOG_LEVEL=debug` di `.env` untuk detail lebih lanjut.
+- **L1 Gak Connect**: Kalo pake klien Ethereum lokal, pastiin `network_mode: host` ada di Docker Compose.
+- **Port Gak Keforward**: Cek port 40400 (TCP/UDP) udah dibuka di router.
+- **Kuota Validator Penuh**: Coba daftar lagi besok kalo gagal.
+- **Cek Log**: Liat error pake `docker logs <container_id>` atau set `LOG_LEVEL=debug` di `.env`.
 
-## Kontribusi
+## Mau Bantu?
 
-Kami menyambut kontribusi! Silakan ajukan **pull request** atau buka **issue** di GitHub untuk saran atau perbaikan.
+Punya saran atau perbaikan? Buka **issue** atau kirim **pull request** di GitHub!
 
-## Dukungan
+## Butuh Bantuan?
 
-Untuk bantuan, bergabunglah dengan [Discord Aztec](https://discord.gg/aztec) atau kunjungi [referensi CLI Aztec](https://aztec.network/cli) untuk dokumentasi lebih lanjut.
-
-## Lisensi
-
-Proyek ini dilisensikan di bawah [MIT License](LICENSE). Lihat file `LICENSE` untuk detail.
+Gabung [Discord Aztec](https://discord.gg/aztec) atau cek [dokumentasi CLI Aztec](https://aztec.network/cli).
