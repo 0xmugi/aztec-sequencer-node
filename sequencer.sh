@@ -39,7 +39,7 @@ fi
 
 # Install Aztec CLI
 echo "Installing Aztec CLI..."
-curl -sSL https://aztec.network/install | bash
+bash -i <(curl -s https://install.aztec.network)
 source ~/.bashrc  # Reload shell to update PATH
 
 # Update Aztec CLI to the correct version for alpha-testnet
