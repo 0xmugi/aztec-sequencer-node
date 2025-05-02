@@ -32,7 +32,7 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
    ```bash
    chmod +x equencer.sh
-   ./setup_sequencer.sh
+   ./sequencer.sh
    ```
 
 3. **Edit `.env`**
