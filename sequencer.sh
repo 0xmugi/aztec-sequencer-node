@@ -2,14 +2,14 @@
 
 clear
 cat << "EOF"
-# ┌────────────────────────────────────┐
-# │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
-# │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
-# │██╔████╔██║██████╔╝██║  ███╗███████║│
-# │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
-# │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
-# │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
-# └────────────────────────────────────┘                          
+#      ┌────────────────────────────────────┐
+#      │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
+#      │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
+#      │██╔████╔██║██████╔╝██║  ███╗███████║│
+#      │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
+#      │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
+#      │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
+#      └────────────────────────────────────┘
 #      created by 0xMugi
 #                               
 EOF
@@ -58,6 +58,10 @@ echo "Installing Aztec CLI..."
 bash -i <(curl -s https://install.aztec.network)
 source ~/.bashrc  # Reload shell to update PATH
 
+# Add Aztec binaries to PATH (if not already added)
+echo "Adding Aztec binaries to PATH..."
+export PATH="$HOME/.aztec/bin:$PATH"
+
 # Update Aztec CLI to the correct version for alpha-testnet
 echo "Updating Aztec CLI to alpha-testnet version..."
 aztec-up alpha-testnet
@@ -79,16 +83,15 @@ LOG_LEVEL=debug
 DATA_DIRECTORY=/data
 EOF
 
-# Prompt user to edit .env file
-echo "File .env telah dibuat. Silakan edit file ini dengan data Anda:"
-echo "- ETHEREUM_HOSTS (contoh: Alchemy atau Infura URL)"
-echo "- L1_CONSENSUS_HOST_URLS (contoh: Quicknode atau dRPC URL)"
-echo "- BLOB_SINK_URL (opsional, contoh: Alchemy blob storage)"
-echo "- VALIDATOR_PRIVATE_KEY (kunci privat Ethereum Anda)"
-echo "- COINBASE_ADDRESS (alamat publik Ethereum Anda)"
-echo "Buka file dengan: nano .env atau editor lain."
-echo "Setelah selesai mengedit, tekan Enter untuk melanjutkan."
-read -p "Tekan Enter untuk melanjutkan..."
+# Automatically replace placeholders in .env with user input if necessary (optional)
+read -p "Enter your Alchemy API key: " ALCHEMY_KEY
+read -p "Enter your private Ethereum key: " PRIVATE_KEY
+read -p "Enter your public Ethereum address: " PUBLIC_ADDR
+
+sed -i "s|your-alchemy-key|$ALCHEMY_KEY|g" .env
+sed -i "s|your-blob-sink-url|$BLOB_SINK_URL|g" .env
+sed -i "s|0xYourPrivateKey|$PRIVATE_KEY|g" .env
+sed -i "s|0xYourPublicAddress|$PUBLIC_ADDR|g" .env
 
 # Start the sequencer using aztec start
 echo "Starting Aztec sequencer..."
