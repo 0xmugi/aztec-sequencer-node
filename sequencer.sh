@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+cat << "EOF"
 # ┌────────────────────────────────────┐
 # │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
 # │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
@@ -10,33 +12,36 @@
 # └────────────────────────────────────┘                          
 #      created by 0xMugi
 #                               
+EOF
 
 # Exit on any error
 set -e
 
 # Verify running on Ubuntu
 if ! lsb_release -a 2>/dev/null | grep -q "Ubuntu"; then
-  echo "Error: This script is designed for Ubuntu Linux only."
+  echo "Error: Skrip ini hanya untuk Ubuntu Linux."
   exit 1
 fi
 
-# Clean up duplicate Docker repository entries
-echo "Cleaning up Docker repository entries..."
-sudo rm -f /etc/apt/sources.list.d/docker.list
-sudo rm -f /etc/apt/sources.list.d/archive_uri-https_download_docker_com_linux_ubuntu-jammy.list
-
 # Install prerequisites
-echo "Installing prerequisites..."
+echo "Menginstal prerequisite..."
 sudo apt-get update
-# Purge conflicting containerd packages
-sudo apt-get purge -y containerd containerd.io 2>/dev/null || true
-# Fix broken dependencies
-sudo apt-get install -f -y
-sudo apt-get install -y curl docker.io
+sudo apt-get install -y curl ca-certificates gnupg lsb-release
+
+# Install Docker using official repository
+echo "Menginstal Docker..."
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install Docker Compose
-echo "Installing Docker Compose..."
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+echo "Menginstal Docker Compose..."
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -oP '"tag_name": "\K[^"]+')
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Start and enable Docker
@@ -46,21 +51,39 @@ sudo usermod -aG docker $USER
 
 # Verify Docker installation
 if ! command -v docker &> /dev/null; then
-  echo "Error: Docker failed to install. Try running 'sudo apt-get update && sudo apt-get install -y docker.io' manually."
+  echo "Error: Docker gagal diinstal. Coba jalankan 'sudo apt-get update && sudo apt-get install -y docker-ce' secara manual."
   exit 1
 fi
 
-# Install Aztec CLI
-echo "Installing Aztec CLI..."
-bash -i <(curl -s https://install.aztec.network)
-source ~/.bashrc  # Reload shell to update PATH
+# Install Node.js and npm (required for Aztec CLI)
+echo "Menginstal Node.js dan npm..."
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+if ! command -v npm &> /dev/null; then
+  echo "Error: npm gagal diinstal."
+  exit 1
+fi
 
-# Update Aztec CLI to the correct version for alpha-testnet
-echo "Updating Aztec CLI to alpha-testnet version..."
-aztec-up alpha-testnet
+# Install Aztec CLI using npm
+echo "Menginstal Aztec CLI..."
+sudo npm install -g @aztec/cli
+if ! command -v aztec-cli &> /dev/null; then
+  echo "Error: Aztec CLI gagal diinstal. Pastikan npm berfungsi dengan benar."
+  exit 1
+fi
+
+# Update PATH
+echo "Memperbarui PATH..."
+export PATH=$PATH:/usr/local/bin
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# Update Aztec CLI to alpha-testnet
+echo "Memperbarui Aztec CLI ke versi alpha-testnet..."
+aztec-cli update alpha-testnet
 
 # Create .env file for configuration
-echo "Creating .env file..."
+echo "Membuat file .env..."
 cat << EOF > .env
 ETHEREUM_HOSTS=https://eth-sepolia.g.alchemy.com/v2/your-alchemy-key
 L1_CONSENSUS_HOST_URLS=https://sepolia-beacon.drpc.org
@@ -88,8 +111,8 @@ echo "Setelah selesai mengedit, tekan Enter untuk melanjutkan."
 read -p "Tekan Enter untuk melanjutkan..."
 
 # Start the sequencer using aztec start
-echo "Starting Aztec sequencer..."
-aztec start --node --archiver --sequencer \
+echo "Menjalankan Aztec sequencer..."
+aztec-cli start --node --archiver --sequencer \
   --network alpha-testnet \
   --l1-rpc-urls $ETHEREUM_HOSTS \
   --l1-consensus-host-urls $L1_CONSENSUS_HOST_URLS \
@@ -100,8 +123,8 @@ aztec start --node --archiver --sequencer \
   --p2p.maxTxPoolSize $MAX_TX_POOL_SIZE
 
 # Register as a validator
-echo "Registering as a validator..."
-aztec add-l1-validator \
+echo "Mendaftar sebagai validator..."
+aztec-cli add-l1-validator \
   --l1-rpc-urls $ETHEREUM_HOSTS \
   --private-key $VALIDATOR_PRIVATE_KEY \
   --attester $COINBASE_ADDRESS \
@@ -109,4 +132,4 @@ aztec add-l1-validator \
   --staking-asset-handler $STAKING_ASSET_HANDLER \
   --l1-chain-id $L1_CHAIN_ID
 
-echo "Dah Kelar."
+echo "Selesai! Aztec sequencer dan validator telah diatur."
