@@ -22,7 +22,7 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 1. **Klon Repo**
 
    ```bash
-   git clone https://github.com/nama-pengguna-anda/aztec-sequencer-node.git
+   git clone https://github.com/0xmugi/aztec-sequencer-node.git
    cd aztec-sequencer-node
    ```
 
@@ -31,8 +31,8 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
    File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
 
    ```bash
-   chmod +x setup_sequencer.sh
-   ./setup_sequencer.sh
+   chmod +x sequencer.sh
+   ./sequencer.sh
    ```
 
 3. **Edit `.env`**
