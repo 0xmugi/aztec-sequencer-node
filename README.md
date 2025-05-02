@@ -19,33 +19,44 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
 ## Cara Jalanin
 
-1. **Klon Repo**
+### 1. **Klon Repo**
+
+   Pertama, kloning repository ke sistem kamu:
 
    ```bash
    git clone https://github.com/0xmugi/aztec-sequencer-node.git
    cd aztec-sequencer-node
    ```
 
-2. **Jalanin Skrip**
+### 2. **Jalanin Skrip**
 
-   File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
+   File `setup_sequencer.sh` bakal menginstal Aztec CLI, membuat file `.env`, dan menunggu kamu untuk mengedit file tersebut sebelum menjalankan sequencer.
+
+   Pastikan skrip bisa dijalankan dengan memberikan izin eksekusi:
 
    ```bash
    chmod +x sequencer.sh
    ./sequencer.sh
    ```
 
-3. **Edit `.env`**
+### 3. **Edit `.env`**
 
-   Pas skrip jalan, dia bakal bikin file `.env` dan minta kamu edit. Buka file pake `nano .env` atau editor lain, terus isi:
+   Setelah skrip dijalankan, file `.env` akan dibuat secara otomatis. Skrip akan meminta kamu untuk mengeditnya sebelum melanjutkan. Buka file `.env` menggunakan `nano` atau editor lain:
 
-   - `ETHEREUM_HOSTS`: URL RPC eksekusi L1 (contoh: Alchemy).
-   - `L1_CONSENSUS_HOST_URLS`: URL RPC konsensus L1 (contoh: dRPC).
-   - `BLOB_SINK_URL`: URL penyimpanan blob (kalo pake).
-   - `VALIDATOR_PRIVATE_KEY`: Kunci privat Ethereum.
-   - `COINBASE_ADDRESS`: Alamat publik Ethereum.
+   ```bash
+   nano .env
+   ```
 
-   **Contoh `.env`**:
+   Di dalam file `.env`, kamu perlu mengisi beberapa informasi yang diperlukan untuk menjalankan node:
+
+   - `ETHEREUM_HOSTS`: URL RPC untuk jaringan Ethereum L1 (contoh: Alchemy).
+   - `L1_CONSENSUS_HOST_URLS`: URL RPC untuk konsensus L1 (contoh: dRPC).
+   - `BLOB_SINK_URL`: URL penyimpanan blob (optional, jika digunakan).
+   - `VALIDATOR_PRIVATE_KEY`: Kunci privat Ethereum untuk validator.
+   - `COINBASE_ADDRESS`: Alamat publik Ethereum untuk coinbase.
+
+   **Contoh file `.env`**:
+
    ```plaintext
    ETHEREUM_HOSTS=https://eth-sepolia.g.alchemy.com/v2/your-alchemy-key
    L1_CONSENSUS_HOST_URLS=https://sepolia-beacon.drpc.org
@@ -61,11 +72,23 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
    DATA_DIRECTORY=/data
    ```
 
-   Setelah edit, tekan Enter di terminal buat lanjutin.
+   Setelah selesai mengedit `.env`, simpan dan keluar dari editor, kemudian tekan Enter di terminal untuk melanjutkan proses.
 
-4. **Daftar Validator**
+### 4. **Menjalankan Sequencer**
 
-   Skrip bakal daftarin node kamu sebagai validator setelah sync. Kalo kuota harian penuh, coba lagi besok. Cek [blog Aztec](https://aztec.network/blog) buat info.
+   Setelah file `.env` selesai diedit, kamu bisa melanjutkan dengan menjalankan sequencer:
+
+   ```bash
+   ./sequencer.sh
+   ```
+
+   Skrip ini akan meluncurkan node Aztec sebagai sequencer.
+
+### 5. **Daftar Validator**
+
+   Setelah node berhasil disinkronkan, skrip akan mendaftarkan node kamu sebagai validator. Jika kuota validator harian penuh, coba lagi besok.
+
+   Untuk informasi lebih lanjut tentang validator, cek [blog Aztec](https://aztec.network/blog).
 
 ## Pake Docker Compose (Opsional)
 
