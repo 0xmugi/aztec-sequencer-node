@@ -31,7 +31,7 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
    File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
 
    ```bash
-   chmod +x equencer.sh
+   chmod +x sequencer.sh
    ./sequencer.sh
    ```
 
