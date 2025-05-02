@@ -22,7 +22,7 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 1. **Klon Repo**
 
    ```bash
-   git clone https://github.com/nama-pengguna-anda/aztec-sequencer-node.git
+   git clone https://github.com/0xmugi/aztec-sequencer-node.git
    cd aztec-sequencer-node
    ```
 
