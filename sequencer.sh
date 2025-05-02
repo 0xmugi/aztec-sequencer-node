@@ -61,6 +61,17 @@ LOG_LEVEL=debug
 DATA_DIRECTORY=/data
 EOF
 
+# Prompt user to edit .env file
+echo "File .env telah dibuat. Silakan edit file ini dengan data Anda:"
+echo "- ETHEREUM_HOSTS (contoh: Alchemy atau Infura URL)"
+echo "- L1_CONSENSUS_HOST_URLS (contoh: Quicknode atau dRPC URL)"
+echo "- BLOB_SINK_URL (opsional, contoh: Alchemy blob storage)"
+echo "- VALIDATOR_PRIVATE_KEY (kunci privat Ethereum Anda)"
+echo "- COINBASE_ADDRESS (alamat publik Ethereum Anda)"
+echo "Buka file dengan: nano .env atau editor lain."
+echo "Setelah selesai mengedit, tekan Enter untuk melanjutkan."
+read -p "Tekan Enter untuk melanjutkan..."
+
 # Start the sequencer using aztec start
 echo "Starting Aztec sequencer..."
 aztec start --node --archiver --sequencer \
@@ -83,4 +94,4 @@ aztec add-l1-validator \
   --staking-asset-handler $STAKING_ASSET_HANDLER \
   --l1-chain-id $L1_CHAIN_ID
 
-echo "Pengaturan sequencer selesai! Gabung ke Discord Aztec untuk bantuan lebih lanjut."
+echo "Dah kelar."

@@ -22,13 +22,13 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 1. **Klon Repo**
 
    ```bash
-   git clone https://github.com/nama-pengguna-anda/aztec-sequencer-node.git
+   git clone https://github.com/0xmugi/aztec-sequencer-node.git
    cd aztec-sequencer-node
    ```
 
 2. **Jalanin Skrip**
 
-   File `setup_sequencer.sh` bakal instal Aztec CLI, atur semua, dan nyalain sequencer.
+   File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
 
    ```bash
    chmod +x setup_sequencer.sh
@@ -37,11 +37,11 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
 3. **Edit `.env`**
 
-   Buka `.env` dan isi data kamu:
+   Pas skrip jalan, dia bakal bikin file `.env` dan minta kamu edit. Buka file pake `nano .env` atau editor lain, terus isi:
 
-   - `ETHEREUM_HOSTS`: URL RPC eksekusi L1.
-   - `L1_CONSENSUS_HOST_URLS`: URL RPC konsensus L1.
-   - `BLOB_SINK_URL`: URL penyimpanan blob (kalo ada).
+   - `ETHEREUM_HOSTS`: URL RPC eksekusi L1 (contoh: Alchemy).
+   - `L1_CONSENSUS_HOST_URLS`: URL RPC konsensus L1 (contoh: dRPC).
+   - `BLOB_SINK_URL`: URL penyimpanan blob (kalo pake).
    - `VALIDATOR_PRIVATE_KEY`: Kunci privat Ethereum.
    - `COINBASE_ADDRESS`: Alamat publik Ethereum.
 
@@ -61,9 +61,11 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
    DATA_DIRECTORY=/data
    ```
 
+   Setelah edit, tekan Enter di terminal buat lanjutin.
+
 4. **Daftar Validator**
 
-   Skrip otomatis daftarin node kamu sebagai validator setelah sync. Kalo kuota harian penuh, coba lagi besok. Cek [blog Aztec](https://aztec.network/blog) buat info.
+   Skrip bakal daftarin node kamu sebagai validator setelah sync. Kalo kuota harian penuh, coba lagi besok. Cek [blog Aztec](https://aztec.network/blog) buat info.
 
 ## Pake Docker Compose (Opsional)
 
@@ -111,7 +113,7 @@ docker-compose up -d
 
 ## Mau Bantu?
 
-Punya saran atau perbaikan? Buka **issue** atau kirim **pull request** di GitHub!
+Punya ide atau perbaikan? Buka **issue** atau kirim **pull request** di GitHub!
 
 ## Butuh Bantuan?
 
