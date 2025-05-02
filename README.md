@@ -17,6 +17,10 @@ Panduan simpel buat jalanin **node sequencer Aztec** di testnet alpha pake Ubunt
 
 Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
+# PENTING
+## [KLIK INI BUAT RPC ALCHEMY](https://www.alchemy.com/)
+## [KLIK INI BUAT dRPC](https://drpc.org/)
+
 ## Cara Jalanin
 
 ### 1. **Klon Repo**
