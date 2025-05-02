@@ -2,15 +2,15 @@
 
 clear
 cat << "EOF"
-#       ┌────────────────────────────────────┐
-#       │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
-#       │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
-#       │██╔████╔██║██████╔╝██║  ███╗███████║│
-#       │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
-#       │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
-#       │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
-#       └────────────────────────────────────┘
-#      created by 0xMugi
+#         ┌────────────────────────────────────┐
+#         │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
+#         │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
+#         │██╔████╔██║██████╔╝██║  ███╗███████║│
+#         │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
+#         │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
+#         │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
+#         └────────────────────────────────────┘
+#          created by 0xMugi
 #
 EOF
 
@@ -89,7 +89,7 @@ LOG_LEVEL=debug
 DATA_DIRECTORY=/data
 EOF
 
-# Prompt user to edit .env file
+# Inform user and stop the process for editing .env file
 echo "File .env telah dibuat. Silakan edit file ini dengan data Anda:"
 echo "- ETHEREUM_HOSTS (contoh: Alchemy atau Infura URL)"
 echo "- L1_CONSENSUS_HOST_URLS (contoh: Quicknode atau dRPC URL)"
@@ -98,7 +98,12 @@ echo "- VALIDATOR_PRIVATE_KEY (kunci privat Ethereum Anda)"
 echo "- COINBASE_ADDRESS (alamat publik Ethereum Anda)"
 echo "Buka file dengan: nano .env atau editor lain."
 echo "Setelah selesai mengedit, tekan Enter untuk melanjutkan."
-read -p "Tekan Enter untuk melanjutkan..."
+echo "Jika Anda ingin melanjutkan, pastikan Anda telah mengedit .env dengan benar."
+
+# Wait for user to edit .env file
+read -p "Tekan Enter untuk melanjutkan setelah mengedit .env..." 
+
+echo "Melanjutkan setelah mengedit .env..."
 
 # Start the sequencer using aztec start
 echo "Starting Aztec sequencer..."
