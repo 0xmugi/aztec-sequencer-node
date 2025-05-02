@@ -31,8 +31,10 @@ cd aztec-sequencer-node
    File `setup_sequencer.sh` bakal instal Aztec CLI, bikin file `.env`, dan nunggu kamu edit sebelum nyalain sequencer.
 
    ```bash
+<<<<<<< HEAD
 chmod +x sequencer.sh
 ./sequencer.sh
+=======
    ```
 
 3. **Edit `.env`**
