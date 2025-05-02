@@ -30,7 +30,7 @@ Gabung [Discord Aztec](https://discord.gg/aztec) buat bantuan.
 
 ### 2. **Jalanin Skrip**
 
-   File `setup_sequencer.sh` bakal menginstal Aztec CLI, membuat file `.env`, dan menunggu kamu untuk mengedit file tersebut sebelum menjalankan sequencer.
+   File `sequencer.sh` bakal menginstal Aztec CLI, membuat file `.env`, dan menunggu kamu untuk mengedit file tersebut sebelum menjalankan sequencer.
 
    Pastikan skrip bisa dijalankan dengan memberikan izin eksekusi:
 
