@@ -2,14 +2,14 @@
 
 clear
 cat << "EOF"
-# ┌────────────────────────────────────┐
-# │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
-# │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
-# │██╔████╔██║██████╔╝██║  ███╗███████║│
-# │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
-# │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
-# │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
-# └────────────────────────────────────┘                          
+#      ┌────────────────────────────────────┐
+#      │███╗   ███╗██████╗  ██████╗ ██╗  ██╗│
+#      │████╗ ████║██╔══██╗██╔════╝ ██║  ██║│
+#      │██╔████╔██║██████╔╝██║  ███╗███████║│
+#      │██║╚██╔╝██║██╔══██╗██║   ██║██╔══██║│
+#      │██║ ╚═╝ ██║██║  ██║╚██████╔╝██║  ██║│
+#      │╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝│
+#      └────────────────────────────────────┘
 #      created by 0xMugi
 #                               
 EOF
@@ -57,6 +57,10 @@ fi
 echo "Installing Aztec CLI..."
 bash -i <(curl -s https://install.aztec.network)
 source ~/.bashrc  # Reload shell to update PATH
+
+# Add Aztec binaries to PATH (if not already added)
+echo "Adding Aztec binaries to PATH..."
+export PATH="$HOME/.aztec/bin:$PATH"
 
 # Update Aztec CLI to the correct version for alpha-testnet
 echo "Updating Aztec CLI to alpha-testnet version..."
