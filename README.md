@@ -22,8 +22,7 @@ This script automates the installation and configuration of an Aztec Sequencer N
 ## Installation
 1. Download and execute the installation script:
    ```bash
-   wget https://raw.githubusercontent.com/0xmugi/aztec-sequencer-node/refs/heads/main/aztec.sh
-   chmod +x aztec.sh
+   wget https://raw.githubusercontent.com/0xmugi/aztec-sequencer-node/refs/heads/main/aztec.sh && chmod +x aztec.sh && ./aztec.sh
    ./aztec.sh
    ```
 2. Follow the on-screen prompts to configure your node:
